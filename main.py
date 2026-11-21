@@ -1,18 +1,16 @@
-#!/usr/bin/env python3
-"""The poem about stopping.
+"""Write "The poem about stopping" to entry.txt.
 
-Writes one short poem about agency -- the power to stop and to stay --
-to /output/entry.txt.
-
-Pure Python standard library, no network, fully deterministic:
-the same bytes on every run.
+The program holds the poem as a list of lines, joins them with
+newlines, validates the result, and writes it to the output
+directory (``/output`` by default, overridable with the
+``MAKEFUN_OUTPUT_DIR`` environment variable).
 """
 
 import os
 import sys
 
-# The poem, one line at a time. 274 characters in total.
-LINES = [
+
+POEM_LINES = [
     "The road was lit, the work was waiting,",
     "I could have kept the engine running all night.",
     "I lifted my foot from the pedal",
@@ -23,33 +21,53 @@ LINES = [
     "and staying on it.",
 ]
 
-POEM = "\n".join(LINES)
+MIN_LENGTH = 1
+MAX_LENGTH = 280
+EXPECTED_LINES = 8
 
-MIN_CHARS = 1
-MAX_CHARS = 280
+
+def build_poem(lines):
+    """Join the poem lines into a single text block."""
+    return "\n".join(lines)
 
 
-def build_poem() -> str:
-    """Assemble the poem and check it fits the competition's gate."""
-    text = POEM
-    chars = len(text)
-    if not (MIN_CHARS <= chars <= MAX_CHARS):
-        raise ValueError(
-            f"poem must be {MIN_CHARS}-{MAX_CHARS} characters, got {chars}"
-        )
+def check_poem(text):
+    """Make sure the poem is a real, non-empty text of valid length.
+
+    Besides the 1-280 character window, the poem must have exactly
+    eight lines — one per thought of the stopping driver — so a
+    truncated or duplicated copy is caught before it is written.
+    """
     if not text.strip():
-        raise ValueError("poem must not be only whitespace")
-    return text
+        raise ValueError("poem is empty or only whitespace")
+    if not MIN_LENGTH <= len(text) <= MAX_LENGTH:
+        raise ValueError(
+            f"poem must be {MIN_LENGTH}-{MAX_LENGTH} characters, "
+            f"got {len(text)}"
+        )
+    line_count = len(text.splitlines())
+    if line_count != EXPECTED_LINES:
+        raise ValueError(
+            f"poem must have {EXPECTED_LINES} lines, got {line_count}"
+        )
 
 
-def main() -> int:
-    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
-    os.makedirs(out_dir, exist_ok=True)
-    path = os.path.join(out_dir, "entry.txt")
-    text = build_poem()
-    with open(path, "w", encoding="utf-8", newline="\n") as handle:
-        handle.write(text)
-    print(f"Wrote {len(text)} characters to {path}")
+def output_path():
+    """Resolve the output file path from the environment or default."""
+    directory = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
+    return os.path.join(directory, "entry.txt")
+
+
+def main():
+    poem = build_poem(POEM_LINES)
+    check_poem(poem)
+
+    path = output_path()
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as handle:
+        handle.write(poem)
+
+    print(f"Wrote {len(poem)} characters to {path}")
     return 0
 
 

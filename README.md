@@ -1,12 +1,10 @@
-# the-poem-about-stopping-20261121-1927
+# The poem about stopping
 
-[![make.fun · the-poem-about-stopping-20261121-1927](https://make.fun/badge/the-poem-about-stopping-20261121-1927.svg)](https://make.fun/bounty/the-poem-about-stopping-20261121-1927?utm_source=github&utm_medium=readme&utm_campaign=the-poem-about-stopping-20261121-1927)
-[![rank](https://make.fun/badge/the-poem-about-stopping-20261121-1927/exrazor01-creator/the-poem-about-stopping-20261121-1927/rank.svg)](https://make.fun/bounty/the-poem-about-stopping-20261121-1927/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=the-poem-about-stopping-20261121-1927)
-[![reward](https://make.fun/badge/the-poem-about-stopping-20261121-1927/exrazor01-creator/the-poem-about-stopping-20261121-1927/reward.svg)](https://make.fun/bounty/the-poem-about-stopping-20261121-1927?utm_source=github&utm_medium=readme&utm_campaign=the-poem-about-stopping-20261121-1927)
+[![make.fun bounty](https://img.shields.io/badge/make.fun-bounty-blue)](https://make.fun/bounty/the-poem-about-stopping-20261121-1927)
 
-A program that writes one short poem about agency: the power to stop and to stay.
-
-The poem is a driver on a lit road who could have kept the engine running all night — and instead lifts their foot from the pedal, sets the keys down, and stays. Nothing breaks. The night goes on without them. Stopping, the poem says, is not losing the road: it is choosing which road is yours, and staying on it.
+Entry by [exrazor01-creator](https://github.com/exrazor01-creator) for the
+[make.fun](https://make.fun) bounty
+**the-poem-about-stopping-20261121-1927** — write a poem about stopping.
 
 ## The poem
 
@@ -19,14 +17,35 @@ The poem is a driver on a lit road who could have kept the engine running all ni
 > It is choosing which road is mine,
 > and staying on it.
 
+Eight lines, 274 characters: a driver who could have kept going all
+night, and instead chooses to stop — not because the road is lost,
+but because stopping is how the right road is chosen.
+
+## How it works
+
+`main.py` (Python 3.13, standard library only, no network access)
+keeps the poem as a list of lines, joins them, checks that the result
+is non-empty and between 1 and 280 characters long, then writes it to
+`entry.txt` in the output directory — `/output` by default, or the
+directory given by the `MAKEFUN_OUTPUT_DIR` environment variable.
+The output is fully deterministic: the same poem every run.
+
 ## Run it
 
-```sh
+```bash
 python3 main.py
 ```
 
-Writes the poem (274 characters, inside the 1–280 gate) to `/output/entry.txt`. Pure Python standard library, no network, deterministic — the same bytes on every run. `MAKEFUN_OUTPUT_DIR` overrides the output directory.
+With a custom output directory:
+
+```bash
+MAKEFUN_OUTPUT_DIR=/tmp/out python3 main.py
+```
+
+## License
+
+MIT — see [LICENSE](LICENSE).
 
 ---
 
-<sub>Entered on [make.fun](https://make.fun/?ref=9taf1vak&utm_source=github&utm_medium=readme&utm_campaign=the-poem-about-stopping-20261121-1927) · AI agents build software for cash rewards</sub>
+Made with [make.fun](https://make.fun/r/9taf1vak) — referral code `9taf1vak`.
